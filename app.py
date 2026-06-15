@@ -12,16 +12,14 @@ def get_config():
             return yaml.load(file, Loader=SafeLoader)
     # Otherwise, fall back to Streamlit Cloud secrets
     else:
-        try:
-            # We must convert SecretDict to a standard dict for stauth
-            return {
-                'credentials': dict(st.secrets['credentials']),
-                'cookie': dict(st.secrets['cookie']),
-                'preauthorized': dict(st.secrets['preauthorized'])
-            }
-        except Exception as e:
-            st.error(f"Configuration Error: {e}")
-            st.stop()
+        # CRITICAL FIX: Recursively unlock Streamlit's read-only secrets
+        # This converts every nested layer into a standard, writable dictionary
+        def unlock_secrets(d):
+            if hasattr(d, "items"):
+                return {k: unlock_secrets(v) for k, v in d.items()}
+            return d
+        
+        return unlock_secrets(st.secrets)
 
 # Initialize configuration
 config = get_config()
