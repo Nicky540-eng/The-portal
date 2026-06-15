@@ -1,6 +1,9 @@
 import streamlit as st
 
 st.set_page_config(page_title="HR Portal | Playbet", layout="wide")
+if not st.session_state.get('authentication_status'):
+    st.error("🔒 Access Denied. Please log in from the main portal page.")
+    st.stop() 
 
 # Persistent Logo in Sidebar
 with st.sidebar:

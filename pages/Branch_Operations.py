@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="Branch Ops | Playbet", layout="wide")
+if not st.session_state.get('authentication_status'):
+    st.error("🔒 Access Denied. Please log in from the main portal page.")
+    st.stop()  
 
 with st.sidebar:
     st.image("logo.jpg", use_container_width=True)
