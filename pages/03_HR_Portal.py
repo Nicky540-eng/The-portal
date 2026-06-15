@@ -1,15 +1,23 @@
 import streamlit as st
 
-st.title("HR Portal")
+st.set_page_config(page_title="HR Portal | Playbet", layout="wide")
 
-# Simple Auth Check
-if 'authenticated' not in st.session_state:
-    st.session_state.authenticated = False
+# Persistent Logo in Sidebar
+with st.sidebar:
+    try:
+        st.image("logo.jpg", use_container_width=True)
+    except:
+        pass
+    st.write("---")
 
-if not st.session_state.authenticated:
-    password = st.text_input("Enter Password", type="password")
-    if password == "your_secure_password": # Replace with your password
-        st.session_state.authenticated = True
-        st.rerun()
-else:
-    st.write("Welcome to the HR Dashboard. Sensitive data displayed here.")
+st.markdown("""
+    <style>
+    h2 { color: #D32F2F !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+st.markdown("<h2>👥 HR Portal</h2>", unsafe_allow_html=True)
+st.write("Employee directories, leave management, and internal resources.")
+st.write("---")
+
+st.info("HR dashboard integration is currently in development. Modules will be available here soon.")
