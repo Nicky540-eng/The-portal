@@ -2,10 +2,29 @@ import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
+import os
 
-# 1. Load your credentials
-with open('credentials.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+# --- 1. LOAD CREDENTIALS (Cloud vs Local) ---
+def get_config():
+    # If a credentials file exists locally, use it
+    if os.path.exists('credentials.yaml'):
+        with open('credentials.yaml') as file:
+            return yaml.load(file, Loader=SafeLoader)
+    # Otherwise, fall back to Streamlit Cloud secrets
+    else:
+        try:
+            # We must convert SecretDict to a standard dict for stauth
+            return {
+                'credentials': dict(st.secrets['credentials']),
+                'cookie': dict(st.secrets['cookie']),
+                'preauthorized': dict(st.secrets['preauthorized'])
+            }
+        except Exception as e:
+            st.error(f"Configuration Error: {e}")
+            st.stop()
+
+# Initialize configuration
+config = get_config()
 
 # 2. Initialize authenticator
 authenticator = stauth.Authenticate(
@@ -15,22 +34,20 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-# 3. Render login (New v0.4+ Syntax: No variable unpacking)
+# 3. Render login
 try:
     authenticator.login()
 except Exception as e:
     st.error(f"Login Error: {e}")
 
-# 4. Access Control (New v0.4+ Syntax: Check session state)
+# 4. Access Control
 if st.session_state.get('authentication_status'):
-    
     # --- IF LOGGED IN ---
     with st.sidebar:
         try:
             st.image("logo.jpg", use_container_width=True)
         except:
             pass
-        # Renders the logout button automatically in the sidebar
         authenticator.logout() 
         st.write("---")
         st.markdown("### 🧭 Navigation")
