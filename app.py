@@ -40,7 +40,8 @@ except Exception as e:
 
 # 4. Access Control
 if st.session_state.get('authentication_status'):
-    # --- IF LOGGED IN ---
+    
+    # --- SIDEBAR NAVIGATION (CLEANED) ---
     with st.sidebar:
         try:
             st.image("logo.jpg", use_container_width=True)
@@ -49,8 +50,10 @@ if st.session_state.get('authentication_status'):
         authenticator.logout() 
         st.write("---")
         st.markdown("### 🧭 Navigation")
-        st.write("Use the sidebar menu above to access departments.")
-    
+        st.write("Use the menu above to access departments.")
+        # Removed the manual Marketing/Knowledge Base dropdown from here.
+
+    # --- MAIN PAGE ---
     st.markdown("<h1 style='text-align: center; color: #D32F2F;'>Playbet Central Operations</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Welcome to the unified hub for all departmental tools.</p>", unsafe_allow_html=True)
     st.write("---")
