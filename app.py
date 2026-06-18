@@ -63,10 +63,11 @@ if st.session_state.get('authentication_status'):
     st.link_button("Registrations & Deposits", "https://registration-and-deposits-dashboard-mucnhw8hvduhycncwghrsd.streamlit.app/", use_container_width=True)
     st.link_button("Branch Performance Analytics", "https://playbetbranchanalytics-9y45k3tx55imncdhbq8wc4.streamlit.app/", use_container_width=True)
     
-    # --- DATA EXTRACTION & UTILITIES ---
+   # --- DATA EXTRACTION & UTILITIES ---
     st.write("### 🛠️ Data Extraction & Utilities")
-    st.link_button("Raventrack ETL Pipeline", "https://playbet-automation-8dvmevk5gcqmbwmes9z2sg.streamlit.app/", use_container_width=True)
+    st.link_button("Raventruck ETL Pipeline", "https://playbet-automation-8dvmevk5gcqmbwmes9z2sg.streamlit.app/", use_container_width=True)
     st.link_button("Self-Exclusion Extractor", "https://huggingface.co/spaces/nicollafundira/self-exclusion-extractor", use_container_width=True)
+    st.link_button("Bulk Data Filtering", "https://playbet-data-pipeline-khdjba2deejx2pegeamfsi.streamlit.app/", use_container_width=True)
 
     # --- PREDICTIVE MODELS ---
     st.write("### 📈 Predictive Modeling")
