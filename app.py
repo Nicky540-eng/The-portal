@@ -65,7 +65,7 @@ if st.session_state.get('authentication_status'):
     
     # --- DATA EXTRACTION & UTILITIES ---
     st.write("### 🛠️ Data Extraction & Utilities")
-    st.link_button("Raventruck ETL Pipeline", "https://playbet-automation-8dvmevk5gcqmbwmes9z2sg.streamlit.app/", use_container_width=True)
+    st.link_button("Raventrack ETL Pipeline", "https://playbet-automation-8dvmevk5gcqmbwmes9z2sg.streamlit.app/", use_container_width=True)
     st.link_button("Self-Exclusion Extractor", "https://huggingface.co/spaces/nicollafundira/self-exclusion-extractor", use_container_width=True)
 
     # --- PREDICTIVE MODELS ---

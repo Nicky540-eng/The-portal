@@ -2,7 +2,7 @@ import streamlit as st
 
 # Secure the page so only logged-in users can see it
 if st.session_state.get('authentication_status'):
-    
+
     # --- ADD SIDEBAR LOGO ---
     with st.sidebar:
         try:
