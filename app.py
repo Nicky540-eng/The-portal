@@ -66,6 +66,8 @@ if st.session_state.get('authentication_status'):
     
     st.write("### 📈 Predictive Modeling")
     st.link_button("GGR & Deposit Forecasting Model", "https://huggingface.co/spaces/nicollafundira/ggr-deposit-forecast", use_container_width=True)
+    # The new Self-Exclusion Extractor link
+    st.link_button("Self-Exclusion Extractor", "https://huggingface.co/spaces/nicollafundira/self-exclusion-extractor", use_container_width=True)
 
 elif st.session_state.get('authentication_status') is False:
     st.error('Username/password is incorrect')
