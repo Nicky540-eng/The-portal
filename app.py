@@ -58,16 +58,19 @@ if st.session_state.get('authentication_status'):
     st.markdown("<p style='text-align: center;'>Welcome to the unified hub for all departmental tools.</p>", unsafe_allow_html=True)
     st.write("---")
 
-    # Global Internal Dashboard Links
+ # Global Internal Dashboard Links
     st.write("### 📊 Internal Operational Dashboards")
     st.link_button("Registrations & Deposits", "https://registration-and-deposits-dashboard-mucnhw8hvduhycncwghrsd.streamlit.app/", use_container_width=True)
-    st.link_button("Raventruck ETL Pipeline", "https://playbet-automation-8dvmevk5gcqmbwmes9z2sg.streamlit.app/", use_container_width=True)
     st.link_button("Branch Performance Analytics", "https://playbetbranchanalytics-9y45k3tx55imncdhbq8wc4.streamlit.app/", use_container_width=True)
     
-    st.write("### 📈 Predictive Modeling")
-    st.link_button("GGR & Deposit Forecasting Model", "https://huggingface.co/spaces/nicollafundira/ggr-deposit-forecast", use_container_width=True)
+    # --- DATA EXTRACTION & UTILITIES ---
+    st.write("### 🛠️ Data Extraction & Utilities")
+    st.link_button("Raventruck ETL Pipeline", "https://playbet-automation-8dvmevk5gcqmbwmes9z2sg.streamlit.app/", use_container_width=True)
     st.link_button("Self-Exclusion Extractor", "https://huggingface.co/spaces/nicollafundira/self-exclusion-extractor", use_container_width=True)
 
+    # --- PREDICTIVE MODELS ---
+    st.write("### 📈 Predictive Modeling")
+    st.link_button("GGR & Deposit Forecasting Model", "https://huggingface.co/spaces/nicollafundira/ggr-deposit-forecast", use_container_width=True)
 elif st.session_state.get('authentication_status') is False:
     st.error('Username/password is incorrect')
 elif st.session_state.get('authentication_status') is None:
