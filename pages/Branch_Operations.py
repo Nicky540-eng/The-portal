@@ -13,7 +13,7 @@ with st.sidebar:
 st.markdown("<h2>🏬 Branch Operations Analytics</h2>", unsafe_allow_html=True)
 
 # 1. Branch Selector (The "Controller")
-branch = st.selectbox("Select Branch for Analysis", ["Malvern", "Pretoria", "Randburg", "White River"])
+branch = st.selectbox("Select Branch for Analysis", ["Malvern", "Pretoria", "Randburg", "White River" , "Potchefstroom" ])
 
 # 2. Metric Visualization Section
 st.write(f"### Current Analysis: {branch}")
