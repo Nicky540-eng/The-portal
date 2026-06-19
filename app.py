@@ -70,9 +70,15 @@ if st.session_state.get('authentication_status'):
 
     with col_op2:
         with st.container(border=True):
-            st.markdown("#### 🏢 Branch Performance")
-            st.caption("Granular analytics regarding individual branch metrics and KPIs.")
-            st.link_button("Launch Analytics", "https://playbetbranchanalytics-9y45k3tx55imncdhbq8wc4.streamlit.app/", use_container_width=True)
+            st.markdown("#### 🏢 Branch Performance & Analytics")
+            st.caption("Granular metrics, KPIs, and detailed GGR/Deposit reporting.")
+            
+            # Use columns inside the container to keep buttons neat
+            b1, b2 = st.columns(2)
+            with b1:
+                st.link_button("Performance", "https://playbetbranchanalytics-9y45k3tx55imncdhbq8wc4.streamlit.app/", use_container_width=True)
+            with b2:
+                st.link_button("GGR & Deposits", "https://playbet-dashboard-ybbwky3ebb3tk3vybqpl5d.streamlit.app/", use_container_width=True)
 
     st.write("") # Spacing
 
