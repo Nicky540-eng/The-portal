@@ -39,8 +39,14 @@ try:
 except Exception as e:
     st.error(f"Login Error: {e}")
 
-# 4. Access Control
+# 4. Access Control & Role Setup
 if st.session_state.get('authentication_status'):
+    
+    # --- ROLE-BASED ACCESS SETUP ---
+    # Retrieve the role from config and store it in session state for other pages to use
+    username = st.session_state.get('username')
+    user_info = config['credentials']['usernames'].get(username, {})
+    st.session_state['role'] = user_info.get('role', 'staff') # Defaults to 'staff' if not set
     
     # --- SIDEBAR NAVIGATION ---
     with st.sidebar:
@@ -50,6 +56,8 @@ if st.session_state.get('authentication_status'):
             pass
         authenticator.logout() 
         st.write("---")
+        # Display the user's name and role so they know their access level
+        st.markdown(f"**Logged in as:** {st.session_state.get('name', '')} ({st.session_state['role'].capitalize()})")
         st.markdown("### 🧭 Navigation")
         st.write("Use the menu above to access departments.")
 
@@ -72,8 +80,6 @@ if st.session_state.get('authentication_status'):
         with st.container(border=True):
             st.markdown("#### 🏢 Branch Performance & Analytics")
             st.caption("Granular metrics, KPIs, and detailed GGR/Deposit reporting.")
-            
-            # Use columns inside the container to keep buttons neat
             b1, b2 = st.columns(2)
             with b1:
                 st.link_button("Performance", "https://playbetbranchanalytics-9y45k3tx55imncdhbq8wc4.streamlit.app/", use_container_width=True)
