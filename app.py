@@ -108,13 +108,19 @@ if st.session_state.get('authentication_status'):
 
     # --- SECTION 3: PREDICTIVE MODELING ---
     st.markdown("### 📈 Predictive Modeling")
-    col_pr1, col_pr2 = st.columns(2) # Using 2 cols so the card isn't too wide
+    col_pr1, col_pr2 = st.columns(2)
 
     with col_pr1:
         with st.container(border=True):
             st.markdown("#### 🔮 GGR & Deposit Forecasting")
             st.caption("Predictive model analyzing historical trends to project future revenue.")
             st.link_button("Run Forecast", "https://huggingface.co/spaces/nicollafundira/ggr-deposit-forecast", use_container_width=True)
+
+    with col_pr2:
+        with st.container(border=True):
+            st.markdown("#### 🏢 Branch GGR & Deposit Model")
+            st.caption("Predictive modeling specifically for branch-level performance metrics.")
+            st.link_button("Run Branch Forecast", "https://branch-ggr-and-deposit-predictive-models-fowrwfzkhnnkyvzp5dxx4.streamlit.app/", use_container_width=True)
 
 elif st.session_state.get('authentication_status') is False:
     st.error('Username/password is incorrect')
