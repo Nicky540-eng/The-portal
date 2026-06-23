@@ -45,7 +45,7 @@ sections = {
         ("Betradar Backend", "https://auth.sportradar.com/")
     ],
     "Analytics": [
-        ("Ibex Backend", "https://ibex.ai/"),
+        ("Ibex Backend", "https://app.ibex.ai//"),
         ("Google Ads", "https://business.google.com/en-all/google-ads/"),
         ("Google Analytics", "https://analytics.google.com/analytics/web/provision/#/provision")
     ]
