@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import calendar
 from datetime import datetime
+import requests # Added for future Eco Time API integration
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="Customer Service Hub", page_icon="📞", layout="wide")
@@ -18,6 +19,30 @@ st.session_state['role'] = selected_role
 
 user_role = st.session_state.get('role', 'staff')
 st.markdown("<h1 style='text-align: center;'>📞 Customer Service Hub</h1>", unsafe_allow_html=True)
+
+# --- ECO TIME API ENGINE (SKELETON) ---
+@st.cache_data(ttl=60) # Refreshes every 60 seconds to pull live punches
+def fetch_live_eco_time_data(target_date):
+    """
+    Placeholder for the Eco Time API. 
+    Uncomment and populate the URL/Keys when the vendor provides them.
+    """
+    # try:
+    #     url = st.secrets["ecotime"]["api_url"] + "/clockings"
+    #     headers = {
+    #         "Authorization": f"Bearer {st.secrets['ecotime']['api_key']}",
+    #         "Content-Type": "application/json"
+    #     }
+    #     payload = {"date": target_date, "department": "Head Office"}
+    #     
+    #     response = requests.get(url, headers=headers, params=payload)
+    #     if response.status_code == 200:
+    #         # Convert JSON response to DataFrame
+    #         return pd.DataFrame(response.json().get('data', []))
+    # except Exception as e:
+    #     st.error(f"API Connection Error: {e}")
+    
+    return None # Return None until API is active
 
 # ==========================================
 # SECTION 1: CORE SUPPORT TOOLS & KNOWLEDGE BASE
@@ -104,42 +129,49 @@ except ValueError:
     st.stop()
 
 # ==========================================
-# SECTION 3: REAL-TIME HR DATA SCANNER
+# SECTION 3: REAL-TIME HR DATA SCANNER (API + CSV FALLBACK)
 # ==========================================
 HR_FILE = "hr_clockins_master.csv"
 clocked_in_ids = []
 current_hr_logs = pd.DataFrame()
 
-# Scan for actual file dropped from HR department
-if os.path.exists(HR_FILE):
-    try:
-        hr_df = pd.read_csv(HR_FILE)
-        
-        # Check if Date column exists
-        if 'Date' in hr_df.columns:
-            hr_df['Date'] = pd.to_datetime(hr_df['Date'])
+# 1. ATTEMPT LIVE API FETCH
+today_str = datetime.now().strftime("%Y-%m-%d")
+api_df = fetch_live_eco_time_data(today_str)
+
+if api_df is not None and not api_df.empty:
+    # --- FUTURE API DATA PARSING ---
+    # When Eco Time is active, we will parse their specific JSON columns here.
+    pass
+
+else:
+    # 2. FALLBACK TO LOCAL CSV
+    if os.path.exists(HR_FILE):
+        try:
+            hr_df = pd.read_csv(HR_FILE)
             
-            # Automatically clear June 2026 data
-            june_2026_count = len(hr_df[(hr_df['Date'].dt.month == 6) & (hr_df['Date'].dt.year == 2026)])
-            if june_2026_count > 0:
-                hr_df = hr_df[~((hr_df['Date'].dt.month == 6) & (hr_df['Date'].dt.year == 2026))]
-                hr_df.to_csv(HR_FILE, index=False)
-                st.sidebar.success(f"✅ Cleared {june_2026_count} June 2026 clock-in records")
-            
-            # Filter strictly for the selected month window
-            current_hr_logs = hr_df[(hr_df['Date'].dt.month == selected_dt.month) & (hr_df['Date'].dt.year == selected_dt.year)].copy()
-            current_hr_logs['Date_Str'] = current_hr_logs['Date'].dt.strftime("%d-%b-%y")
-            
-            # Check if Name column exists
-            if 'Name' in current_hr_logs.columns:
-                clocked_in_ids = (current_hr_logs['Date_Str'] + "_" + current_hr_logs['Name']).tolist()
+            if 'Date' in hr_df.columns:
+                hr_df['Date'] = pd.to_datetime(hr_df['Date'])
+                
+                # Automatically clear June 2026 data
+                june_2026_count = len(hr_df[(hr_df['Date'].dt.month == 6) & (hr_df['Date'].dt.year == 2026)])
+                if june_2026_count > 0:
+                    hr_df = hr_df[~((hr_df['Date'].dt.month == 6) & (hr_df['Date'].dt.year == 2026))]
+                    hr_df.to_csv(HR_FILE, index=False)
+                    st.sidebar.success(f"✅ Cleared {june_2026_count} June 2026 clock-in records")
+                
+                # Filter strictly for the selected month window
+                current_hr_logs = hr_df[(hr_df['Date'].dt.month == selected_dt.month) & (hr_df['Date'].dt.year == selected_dt.year)].copy()
+                current_hr_logs['Date_Str'] = current_hr_logs['Date'].dt.strftime("%d-%b-%y")
+                
+                if 'Name' in current_hr_logs.columns:
+                    clocked_in_ids = (current_hr_logs['Date_Str'] + "_" + current_hr_logs['Name']).tolist()
+                else:
+                    clocked_in_ids = []
             else:
-                clocked_in_ids = []
-        else:
-            st.sidebar.warning("HR file missing 'Date' column")
-    except Exception as e:
-        # Silently handle the error without displaying it
-        pass
+                st.sidebar.warning("HR file missing 'Date' column")
+        except Exception as e:
+            pass
 
 # ==========================================
 # SECTION 4: MANAGER EDIT (DAY & NIGHT TABS)
