@@ -22,17 +22,14 @@ def fetch_live_eco_time_data(target_date):
 # ==========================================
 # SECTION 1: CORE SUPPORT TOOLS
 # ==========================================
-col_cs1, col_cs2, col_cs3 = st.columns(3)
+col_cs1, col_cs2 = st.columns(2)
+
 with col_cs1:
     with st.container(border=True):
         st.markdown("#### 🎧 Freshworks Tickets")
         st.link_button("Open Freshworks", "https://playbet.freshworks.com/login", use_container_width=True)
+
 with col_cs2:
-    with st.container(border=True):
-        st.markdown("#### 💻 IT & Tech Hub")
-        st.link_button("🔗 Ibex Backend", "https://app.ibex.ai/", use_container_width=True)
-        st.button("System Status", disabled=True, use_container_width=True)
-with col_cs3:
     with st.container(border=True):
         st.markdown("#### 📚 Knowledge Base")
         with st.expander("📖 Open Operational Links", expanded=False):
@@ -61,7 +58,7 @@ def generate_roster_logic(filepath, year, month):
     night_data = {"Name": night_team}
     
     for date_obj in dates:
-        # FIX 1: Generate headers as "Mon 01 June 2026"
+        # Generate headers as "Mon 01 June 2026"
         col_name = date_obj.strftime("%a %d %B %Y") 
         
         day_shifts = []
@@ -116,7 +113,7 @@ if api_df is None or api_df.empty:
                 hr_df['Date'] = pd.to_datetime(hr_df['Date'])
                 current_hr_logs = hr_df[(hr_df['Date'].dt.month == selected_dt.month) & (hr_df['Date'].dt.year == selected_dt.year)].copy()
                 
-                # FIX 2: Ensure HR match IDs use the new format
+                # Ensure HR match IDs use the new format
                 current_hr_logs['Date_Str'] = current_hr_logs['Date'].dt.strftime("%a %d %B %Y")
                 if 'Name' in current_hr_logs.columns:
                     clocked_in_ids = (current_hr_logs['Date_Str'] + "_" + current_hr_logs['Name']).tolist()
@@ -156,7 +153,7 @@ def highlight_cells(df):
     
     for col in df.columns:
         if col != 'Name':
-            # FIX 3: Look for the specific "Mon 01 June 2026" format
+            # Look for the specific "Mon 01 June 2026" format
             try: 
                 col_date = datetime.strptime(str(col), "%a %d %B %Y").date()
             except ValueError: 
